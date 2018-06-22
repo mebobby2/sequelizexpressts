@@ -6,9 +6,26 @@
 2. node_modules/.bin/sequelize db:create
 3. node_modules/.bin/sequelize db:migrate
 
-
-## Postgres
+#### Postgres
 Download and install postgresapp. It automatically creates a user for you that matches your system username.
+
+## Usage
+### Register
+```
+POST /register
+{"email": "hello@me.com", "password": "sdsdfsdfsdfsdf", "confirmPassword": "sdsdfsdfsdfsdf"}
+```
+
+### Login
+```
+POST /login
+{"email": "hell2o@me.com", "password": "sdsdfsdfsdfsdf"}
+```
+
+### Access Protected Resource
+```
+GET /some-protected-resource?token=<token-from-login-response>
+```
 
 ## notes
 ### Namespaces
