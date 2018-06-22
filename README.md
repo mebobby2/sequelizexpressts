@@ -10,6 +10,10 @@
 #### Postgres
 Download and install postgresapp. It automatically creates a user for you that matches your system username.
 
+## Develop
+
+```yarn start``` in the background
+
 ## Usage
 ### Register
 ```
