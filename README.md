@@ -9,3 +9,7 @@
 
 ## Postgres
 Download and install postgresapp. It automatically creates a user for you that matches your system username.
+
+## Sources
+https://blog.gorrion.pl/node-express-js-typescript-sequelize/
+https://michalzalecki.com/using-sequelize-with-typescript/

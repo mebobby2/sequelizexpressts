@@ -1,7 +1,8 @@
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import * as Bluebird from "Bluebird";
-import { User, UserModel, UserAddModel, UserViewModel } from "../models/user";
+import { AddUserAttributes, UserAttributes, UserInstance } from "../models/user";
+import Models from '../models';
 
 export class UserService {
   private readonly _saltRounds = 12;
@@ -16,16 +17,16 @@ export class UserService {
     return UserService._user;
   }
 
-  register({ email, password }: UserAddModel) {
+  register({ email, password }: AddUserAttributes) {
     return bcrypt.hash(password, this._saltRounds).then(hash => {
-      return User.create({ email, password: hash }).then(u =>
+      return Models.User.create({ email, password: hash }).then(u =>
         this.getUserById(u!.id)
       );
     });
   }
 
-  login({ email }: UserAddModel) {
-    return User.findOne({ where: { email } }).then(u => {
+  login({ email }: AddUserAttributes) {
+    return Models.User.findOne({ where: { email } }).then(u => {
       const { id, email } = u!;
       return { token: jwt.sign({ id, email }, this._jwtSecret) };
     });
@@ -35,20 +36,20 @@ export class UserService {
     return new Promise((resolve, reject) => {
       jwt.verify(token, this._jwtSecret, (err, decoded) => {
         if (err) {
-          resolve(false)
-          return
+          resolve(false);
+          return;
         }
 
-        UserService._user = User.findById(decoded['id'])
-        resolve(true)
-        return
-      })
-    }) as Promise<boolean>
+        UserService._user = Models.User.findById(decoded["id"]);
+        resolve(true);
+        return;
+      });
+    }) as Promise<boolean>;
   }
 
   getUserById(id: number) {
-    return User.findById(id, {
+    return Models.User.findById(id, {
       attributes: UserService.userAttributes
-    }) as Bluebird<UserModel>
+    }) as Bluebird<UserAttributes>;
   }
 }
