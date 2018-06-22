@@ -1,6 +1,11 @@
 # Sequelizexpressts
 
-https://gorrion.io/blog/node-express-js-typescript-sequelize/
+## Setup
 
-Upto:
-I do not want to expose entire user model in response body. In the code below you can see only id and email.
+1. yarn install
+2. node_modules/.bin/sequelize db:create
+3. node_modules/.bin/sequelize db:migrate
+
+
+## Postgres
+Download and install postgresapp. It automatically creates a user for you that matches your system username.

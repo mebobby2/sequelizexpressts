@@ -1,12 +1,12 @@
 import * as Sequelize from "sequelize";
 
-const db = "expressapp";
-const username = "root";
-const password = "root";
+const db = "database_development";
+const username = "bob";
+const password = null;
 
 export const sequelize = new Sequelize(db, username, password, {
   dialect: "postgres",
-  port: 3306
+  port: 5432
 });
 
 sequelize.authenticate();
