@@ -87,5 +87,7 @@ console.log(foo); // 123
 
 ## Sources
 https://blog.gorrion.pl/node-express-js-typescript-sequelize/
+
 https://michalzalecki.com/using-sequelize-with-typescript/
+
 http://docs.sequelizejs.com/manual/tutorial/migrations.html
