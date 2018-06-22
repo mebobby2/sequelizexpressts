@@ -5,6 +5,7 @@
 1. yarn install
 2. node_modules/.bin/sequelize db:create
 3. node_modules/.bin/sequelize db:migrate
+4. node_modules/.bin/sequelize db:seed:all
 
 #### Postgres
 Download and install postgresapp. It automatically creates a user for you that matches your system username.
@@ -87,3 +88,4 @@ console.log(foo); // 123
 ## Sources
 https://blog.gorrion.pl/node-express-js-typescript-sequelize/
 https://michalzalecki.com/using-sequelize-with-typescript/
+http://docs.sequelizejs.com/manual/tutorial/migrations.html
