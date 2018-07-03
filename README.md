@@ -89,6 +89,81 @@ if (true) {
 console.log(foo); // 123
 ```
 
+### Index types
+With index types, you can get the compiler to check code that uses dynamic property names. For example, a common Javascript pattern is to pick a subset of properties from an object:
+
+```
+function pluck(o, names) {
+    return names.map(n => o[n]);
+}
+```
+
+Here’s how you would write and use this function in TypeScript, using the index type query and indexed access operators:
+
+```
+function pluck<T, K extends keyof T>(o: T, names: K[]): T[K][] {
+  return names.map(n => o[n]);
+}
+
+interface Person {
+    name: string;
+    age: number;
+}
+let person: Person = {
+    name: 'Jarid',
+    age: 35
+};
+let strings: string[] = pluck(person, ['name']); // ok, string[]
+```
+
+The compiler checks that name is actually a property on Person. The example introduces a couple of new type operators. First is keyof T, the **index type query operator**. For any type T, keyof T is the union of known, public property names of T. For example:
+
+```
+let personProps: keyof Person; // 'name' | 'age'
+```
+
+The second operator is T[K], the **indexed access operator**. Here, the type syntax reflects the expression syntax. That means that person['name'] has the type Person['name'] — which in our example is just string. However, just like index type queries, you can use T[K] in a generic context, which is where its real power comes to life. You just have to make sure that the type variable K extends keyof T. Here’s another example with a function named getProperty.
+
+```
+function getProperty<T, K extends keyof T>(o: T, name: K): T[K] {
+    return o[name]; // o[name] is of type T[K]
+}
+```
+
+In getProperty, o: T and name: K, so that means o[name]: T[K]. Once you return the T[K] result, the compiler will instantiate the actual type of the key, so the return type of getProperty will vary according to which property you request.
+
+```
+let name: string = getProperty(person, 'name');
+let age: number = getProperty(person, 'age');
+let unknown = getProperty(person, 'unknown'); // error, 'unknown' is not in 'name' | 'age'
+```
+
+### Mapped types
+A common task is to take an existing type and make each of its properties readonly:
+
+```
+interface PersonReadonly {
+    readonly name: string;
+    readonly age: number;
+}
+```
+
+This happens often enough in Javascript that TypeScript provides a way to create new types based on old types — mapped types. In a mapped type, the new type transforms each property in the old type in the same way. For example, you can make all properties of a type readonly:
+
+```
+type Readonly<T> = {
+    readonly [P in keyof T]: T[P];
+};
+```
+
+And to use it:
+
+```
+type ReadonlyPerson = Readonly<Person>;
+```
+
+The *in* keyword within the square brackets signals that we're dealing with a mapped type. [P in keyof T]: T[P] denotes that the type of each property P of type T should be transformed to T[P]. Without the readonly modifier, this would be an identity transformation.
+
 ## Sources
 https://blog.gorrion.pl/node-express-js-typescript-sequelize/
 
