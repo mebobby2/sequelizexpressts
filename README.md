@@ -164,6 +164,50 @@ type ReadonlyPerson = Readonly<Person>;
 
 The *in* keyword within the square brackets signals that we're dealing with a mapped type. [P in keyof T]: T[P] denotes that the type of each property P of type T should be transformed to T[P]. Without the readonly modifier, this would be an identity transformation.
 
+### Function Interfaces
+```
+interface SearchFunc {
+    (source: string, subString: string): boolean;
+}
+
+let mySearch: SearchFunc;
+mySearch = function(source: string, subString: string) {
+    let result = source.search(subString);
+    return result > -1;
+}
+```
+
+An example from Redux library,
+
+```
+export interface ActionCreator<A> {
+  (...args: any[]): A;
+}
+```
+This means, the method signature for ActionCreator:
+1. Takes a variable number of arguments (an array)
+2. Each of the arguments are of the type *any*
+3. The return type of the function is a generic.
+
+So to use:
+```
+export interface IShowModalAction extends Action {
+  type: "SHOW_MODAL";
+  payload: {
+    title: string;
+    primaryButtonText: string;
+    secondaryButtonText: string;
+  };
+}
+
+export const showModal: ActionCreator<IShowModalAction> = (title, primaryButtonText, secondaryButtonText) => ({
+  type: SHOW_MODAL,
+  payload: { title, primaryButtonText, secondaryButtonText },
+});
+```
+
+So, showModal is an ActionCreator. It takes the arguments title, primaryButtonText, and secondaryButtonText. And it returns an object of type IShowModalAction.
+
 ## Sources
 https://blog.gorrion.pl/node-express-js-typescript-sequelize/
 
